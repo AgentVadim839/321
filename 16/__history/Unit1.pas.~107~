@@ -1,0 +1,170 @@
+unit Unit1;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls;
+
+type
+  TForm1 = class(TForm)
+    Memo1: TMemo;
+    ListBox1: TListBox;
+    Label1: TLabel;
+    Button1: TButton;
+    Button2: TButton;
+    Edit1: TEdit;
+    Button3: TButton;
+    Button4: TButton;
+    procedure Button1Click(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
+    procedure printMas1;
+    procedure printMas2;
+    procedure printMas3;
+    procedure Button3Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form1: TForm1;
+
+const
+    SIZE=5; // розмір масиву
+var
+    a:array[1..SIZE] of real; //  масив
+    n:integer;                      //  кількість рядків, ввеедних в поле Memo
+    i:integer;                      //  індекс елемента масиву
+    st:string;
+    st2:string; // список команд
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm1.Button1Click(Sender: TObject);
+const
+  SIZE=5; // розмір масиву
+var
+  n:integer;                      //  кількість рядків, ввеедних в поле Memo
+  i:integer;                      //  індекс елемента масиву
+  st:string;
+  t: real;
+  ii,j: integer;
+begin
+   n:=Memo1.Lines.Count;
+  if n=0 then
+  begin
+    ShowMessage('Вихідні дані не введені');
+    Exit; // вихід з процедури обробки події
+  end;
+
+  // в полі Memo є текст
+  if n>SIZE then
+  begin
+    ShowMessage('Кількість рядків перевищує розмір масиву');
+    n:=SIZE;  // будемо вводити  тільки перші SIZE рядків
+  end;
+
+  for i:=1 to n do
+    a[i]:=StrToFloat(Form1.Memo1.Lines[i-1]); // рядки Memo пронумеровані з нуля
+
+
+  // вивід масиву у вікно повідомлення
+  if n>0 then
+  begin
+    st:='Введений масив:'+#13;
+
+    for ii := Low(a) to High(a) do
+    begin
+      for j := Low(a) to High(a) - 1 do
+      begin
+        if a[j] > a[j + 1] then
+        begin
+          // Обмен значений
+          t := a[j];
+          a[j] := a[j + 1];
+          a[j + 1] := t;
+        end;
+      end;
+    end;
+
+    for i:=1 to n do
+    begin
+      st:=st+IntToStr(i)+'. '+FloatToStr(a[i])+#13;
+    end;
+    ShowMessage(st);
+  end;
+
+end;
+
+procedure TForm1.Button2Click(Sender: TObject);
+
+  begin
+    printMas1;
+    printMas3;
+    printMas2;
+
+  end;
+
+procedure TForm1.Button3Click(Sender: TObject);
+begin
+і
+end;
+
+procedure TForm1.printMas1;
+  begin
+    n:=Memo1.Lines.Count;
+    if n=0 then
+
+    // в полі Memo є текст
+    if n>SIZE then
+    begin
+      ShowMessage('Кількість рядків перевищує розмір масиву');
+      n:=SIZE;  // будемо вводити  тільки перші SIZE рядків
+    end;
+
+
+
+    Form1.ListBox1.Clear;
+    // вивід масиву у  ListBox
+    for i:=1 to n do
+      Form1.ListBox1.Items.Add(FloatToStr(a[i]));  // рядки ListBox пронумеровані з нуля
+  end;
+
+procedure TForm1.printMas2;
+var
+  st,st2:string; // список команд
+  i:integer; //   індекс, номер масиву
+begin
+  //  формування списку для відображення у формі
+  for i:=1 to SIZE do
+  begin
+     st:=st+IntToStr(i)+'. '+FloatToStr(a[i])+#13;
+  end;
+
+
+  // вивід масиву за допомогою мітки (компонент Label)
+  Label1.Caption:=st;
+
+  // вивід масиву за допомогою функції   ShowMessage
+  ShowMessage(st);
+
+end;
+
+procedure TForm1.printMas3;
+var
+  st,st2:string; // список команд
+  i:integer; //   індекс, номер масиву
+begin
+  for i:=1 to SIZE do
+  begin
+     st:=st+' '+FloatToStr(a[i]);
+  end;
+
+  Edit1.Text := st;
+end;
+
+end.
